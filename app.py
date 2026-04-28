@@ -6,37 +6,12 @@ from datetime import datetime
 from io import BytesIO
 import base64
 import os
-import plotly.io as pio
-import platform
-import pandas as pd
 
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib import colors
-from reportlab.lib.units import cm, inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-
-# ============ CRITICAL FIX FOR STREAMLIT CLOUD ============
-# Safely handle kaleido configuration without attribute errors
-if platform.system() != 'Windows':
-    try:
-        # Try to access kaleido scope safely
-        if hasattr(pio, 'kaleido') and pio.kaleido is not None:
-            if hasattr(pio.kaleido, 'scope') and hasattr(pio.kaleido.scope, 'chromium_args'):
-                pio.kaleido.scope.chromium_args += (
-                    "--no-sandbox",
-                    "--disable-setuid-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-gpu",
-                    "--single-process",
-                    "--disable-extensions",
-                    "--disable-features=TranslateUI",
-                    "--disable-ipc-flooding-protection",
-                )
-    except (AttributeError, TypeError, Exception):
-        # If kaleido isn't available or initialized, skip the configuration
-        pass
-# =========================================================
 
 st.set_page_config(
     page_title="PulmoSense AI • Lung Cancer Risk Prediction System",
@@ -820,6 +795,7 @@ def create_research_pdf():
         doc.build(story)
 
     except Exception as e:
+        st.error(f"❌ PDF generation failed: {e}")
         return None
 
     return buffer.getvalue()
@@ -854,6 +830,6 @@ if "result" in st.session_state:
 st.markdown(f"""
 <div class="research-footer">
     <strong>PulmoSense AI</strong> | Research Publication Ready<br>
-    <small>© 2026 • PulmoSense AI Lung Cancer Risk Prediction System.</em>, 2026</small>
+    <small>© 2026 • PulmoSense AI Lung Cancer Risk Prediction System</small>
 </div>
 """, unsafe_allow_html=True)
