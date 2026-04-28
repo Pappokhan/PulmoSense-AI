@@ -17,25 +17,18 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 # ============ CRITICAL FIX FOR STREAMLIT CLOUD ============
-# Safely handle kaleido configuration without attribute errors
 if platform.system() != 'Windows':
-    try:
-        # Try to access kaleido scope safely
-        if hasattr(pio, 'kaleido') and pio.kaleido is not None:
-            if hasattr(pio.kaleido, 'scope') and hasattr(pio.kaleido.scope, 'chromium_args'):
-                pio.kaleido.scope.chromium_args += (
-                    "--no-sandbox",
-                    "--disable-setuid-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-gpu",
-                    "--single-process",
-                    "--disable-extensions",
-                    "--disable-features=TranslateUI",
-                    "--disable-ipc-flooding-protection",
-                )
-    except (AttributeError, TypeError, Exception):
-        # If kaleido isn't available or initialized, skip the configuration
-        pass
+    pio.kaleido.scope.chromium_args += (
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--single-process",
+        "--disable-extensions",
+        "--disable-features=TranslateUI",
+        "--disable-ipc-flooding-protection",
+    )
+
 # =========================================================
 
 st.set_page_config(
