@@ -6,8 +6,6 @@ from datetime import datetime
 from io import BytesIO
 import base64
 import os
-import plotly.io as pio
-import platform
 import pandas as pd
 
 from reportlab.lib.pagesizes import A4, landscape
