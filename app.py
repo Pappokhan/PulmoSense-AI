@@ -11,10 +11,9 @@ import pandas as pd
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib import colors
 from reportlab.lib.units import cm, inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
-# ============ CRITICAL FIX FOR STREAMLIT CLOUD ============
 if platform.system() != 'Windows':
     pio.kaleido.scope.chromium_args += (
         "--no-sandbox",
@@ -27,7 +26,6 @@ if platform.system() != 'Windows':
         "--disable-ipc-flooding-protection",
     )
 
-# =========================================================
 
 st.set_page_config(
     page_title="PulmoSense AI • Lung Cancer Risk Prediction System",
@@ -36,7 +34,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ============ PROFESSIONAL COLOR THEME ============
 COLORS = {
     'primary': '#0F4C81',
     'secondary': '#2E86AB',
@@ -52,7 +49,6 @@ COLORS = {
     'hover_bg': '#F1F5F9'
 }
 
-# Perfect Alignment CSS - Enhanced
 st.markdown(f"""
 <style>
     /* Main container */
@@ -417,15 +413,12 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Main Content Grid - Perfect 50-50 Split
 col_left, col_right = st.columns([1, 1], gap="large", vertical_alignment="top")
 
 with col_left:
-    # Clinical Assessment Card
     st.markdown('<div class="academic-card">', unsafe_allow_html=True)
     st.markdown('<div class="card-title">📋 Clinical Assessment Form</div>', unsafe_allow_html=True)
 
-    # Two column layout inside left card
     col_l1, col_l2 = st.columns(2, gap="medium")
 
     with col_l1:
@@ -453,7 +446,6 @@ with col_left:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right:
-    # Health Status Card
     st.markdown('<div class="academic-card">', unsafe_allow_html=True)
     st.markdown('<div class="card-title">💪 Health Status Assessment</div>', unsafe_allow_html=True)
 
@@ -483,7 +475,6 @@ with col_right:
         else:
             st.caption("✓ Good immunity")
 
-    # Clinical alerts based on SpO2
     if spo2 < 90:
         st.markdown(f"""
         <div class="clinical-alert">
@@ -731,7 +722,7 @@ if analyze_clicked:
         }
 
 
-# ================== PDF GENERATION ==================
+# PDF GENERATION
 def create_research_pdf():
     buffer = BytesIO()
 
