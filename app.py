@@ -17,6 +17,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 # ============ CRITICAL FIX FOR STREAMLIT CLOUD ============
+# Safely handle kaleido configuration without attribute errors
 if platform.system() != 'Windows':
     try:
         # Try to access kaleido scope safely
@@ -35,7 +36,6 @@ if platform.system() != 'Windows':
     except (AttributeError, TypeError, Exception):
         # If kaleido isn't available or initialized, skip the configuration
         pass
-
 # =========================================================
 
 st.set_page_config(
