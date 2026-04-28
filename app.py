@@ -18,16 +18,23 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 # ============ CRITICAL FIX FOR STREAMLIT CLOUD ============
 if platform.system() != 'Windows':
-    pio.kaleido.scope.chromium_args += (
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--single-process",
-        "--disable-extensions",
-        "--disable-features=TranslateUI",
-        "--disable-ipc-flooding-protection",
-    )
+    try:
+        # Try to access kaleido scope safely
+        if hasattr(pio, 'kaleido') and pio.kaleido is not None:
+            if hasattr(pio.kaleido, 'scope') and hasattr(pio.kaleido.scope, 'chromium_args'):
+                pio.kaleido.scope.chromium_args += (
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                    "--single-process",
+                    "--disable-extensions",
+                    "--disable-features=TranslateUI",
+                    "--disable-ipc-flooding-protection",
+                )
+    except (AttributeError, TypeError, Exception):
+        # If kaleido isn't available or initialized, skip the configuration
+        pass
 
 # =========================================================
 
